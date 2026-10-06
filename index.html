@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ข้อสอบ CBT 013736</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@500;600;700&display=swap" rel="stylesheet">
+<!--
+  ============================================================================
+  ข้อสอบออนไลน์ 013736 Theories of Contemporary Counseling (CBT) — v2
+  ทำตาม "คู่มือขั้นตอนการออกข้อสอบออนไลน์ (Reusable Playbook)" ขั้นตอนที่ 3–4
+  ----------------------------------------------------------------------------
+  ฟีเจอร์
+    - ห้ามดูข้อสอบก่อน   : คำถามแสดงหลังกรอกชื่อ-รหัส และกด "เริ่มทำข้อสอบ" เท่านั้น
+    - ห้ามย้อนกลับแก้     : มีเฉพาะปุ่มข้อถัดไป คำตอบล็อกทันที, ปุ่ม Back ของเบราว์เซอร์ใช้ไม่ได้
+    - จับเวลา            : 60 นาที นับจากเวลาเริ่มจริง (รีเฟรชไม่รีเซ็ต) หมดเวลาส่งอัตโนมัติ
+    - ทำได้ครั้งเดียว       : คำเตือนเด่นก่อนเริ่ม + เตือนเมื่อจะปิด/รีเฟรช + ล็อกในเบราว์เซอร์ + ชีตทำเครื่องหมายส่งซ้ำ
+    - บันทึกคะแนนย้อนหลัง  : ส่งคะแนนรวม + ราย CLO ไป Google Sheet (SUBMIT_ENDPOINT) ไม่แสดงคะแนนให้นักศึกษา
+                          ส่งไม่สำเร็จ → ดาวน์โหลดไฟล์ผลสอบ .json ลงเครื่องอัตโนมัติ
+    - สุ่มข้อ/ตัวเลือก      : สลับลำดับข้อภายในหัวข้อเดียวกัน + สลับตัวเลือกทุกครั้งที่เข้าทำ
+    - ฟอนต์              : Sarabun ทั้งหน้า น้ำหนัก 500/700
+    - กันคัดลอกเบื้องต้น    : ปิดลากเลือกข้อความ, คลิกขวา, Ctrl/Cmd+C/X/A/P/S/U
+
+  ใช้กับวิชาอื่น: แก้ CONFIG และแทนที่ JSON ใน <script id="exam-data"> (โครงสร้างเดิม)
+  ข้อจำกัด: เฉลยอยู่ในไฟล์ (View Source เห็นได้), ไม่ใช่ระบบ proctoring
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:#f6f5f2; --surface:#ffffff; --ink:#1d1d1b; --muted:#6b6a65; --line:#e3e1db;
+    --accent:#1f4e8c; --accent-ink:#ffffff; --accent-soft:#e8eef7;
+    --warn:#b4530f; --danger:#b42318; --ok:#1e7a46; --case:#f3efe4;
+    --radius:12px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#141413; --surface:#1e1e1c; --ink:#ecebe6; --muted:#a3a29c; --line:#34332f;
+      --accent:#7aa7e6; --accent-ink:#0e1a2b; --accent-soft:#1d2a3d;
+      --warn:#f0a35c; --danger:#f2786d; --ok:#5fc48a; --case:#2a2721;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#141413; --surface:#1e1e1c; --ink:#ecebe6; --muted:#a3a29c; --line:#34332f;
+    --accent:#7aa7e6; --accent-ink:#0e1a2b; --accent-soft:#1d2a3d;
+    --warn:#f0a35c; --danger:#f2786d; --ok:#5fc48a; --case:#2a2721;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:"Sarabun",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;font-weight:500;line-height:1.65;-webkit-font-smoothing:antialiased}
+  body.locked-select #vQuiz, body.locked-select #vQuiz *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  .alert{border:2px solid var(--danger);background:color-mix(in srgb,var(--danger) 8%,transparent);border-radius:10px;padding:12px 16px;margin:12px 0 16px}
+  .alert b{color:var(--danger)}
+  .receipt{font-family:ui-monospace,monospace;font-size:20px;font-weight:700;letter-spacing:1px;background:var(--accent-soft);color:var(--accent);padding:8px 14px;border-radius:8px;display:inline-block;margin:6px 0 12px}
+  .wrap{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+  header.bar{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+  header.bar .in{max-width:760px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
+  .brand{font-weight:700;font-size:15px}
+  .brand small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+  .spacer{flex:1}
+  .timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:18px;padding:4px 10px;border-radius:8px;background:var(--accent-soft);color:var(--accent)}
+  .timer.low{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn)}
+  .timer.crit{background:color-mix(in srgb,var(--danger) 15%,transparent);color:var(--danger)}
+  .progress{height:4px;background:var(--line)}
+  .progress > i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  h1{font-size:24px;line-height:1.3;margin:0 0 6px}
+  h2{font-size:19px;margin:0 0 12px}
+  p{margin:0 0 12px}
+  .muted{color:var(--muted)}
+  ul.rules{margin:8px 0 16px;padding-left:20px}
+  ul.rules li{margin:4px 0}
+  label.f{display:block;font-weight:600;font-size:15px;margin:14px 0 6px}
+  input[type=text]{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+  input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .check{display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:15px}
+  .btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:12px 22px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:20px}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .tag{font-size:13px;padding:2px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .tag.gray{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+  .case{background:var(--case);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:16px}
+  .case b{display:block;font-size:14px;margin-bottom:4px}
+  .stem{font-size:18px;margin-bottom:16px}
+  .opts{display:grid;gap:10px}
+  .opt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;cursor:pointer;background:var(--surface)}
+  .opt:hover{border-color:var(--accent)}
+  .opt input{position:absolute;opacity:0;pointer-events:none}
+  .opt .k{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;border:1.5px solid var(--line)}
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .opt.sel .k{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .opt:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+  .note{font-size:14px;color:var(--muted);margin-top:14px}
+  .score{font-size:48px;font-weight:700;line-height:1;margin:8px 0}
+  table.res{width:100%;border-collapse:collapse;margin:12px 0;font-size:15px}
+  table.res th,table.res td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+  table.res td.n{text-align:right;font-variant-numeric:tabular-nums}
+  .status{font-size:14px;margin-top:8px}
+  .status.ok{color:var(--ok)} .status.err{color:var(--danger)}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
+  .modal.show{display:flex}
+  .modal .card{max-width:440px}
+  .hidden{display:none !important}
+  @media (max-width:520px){ .card{padding:18px} .stem{font-size:17px} h1{font-size:21px} }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="in">
+    <div class="brand">ข้อสอบ CBT 013736<small id="hdrSub">Theories of Contemporary Counseling</small></div>
+    <div class="spacer"></div>
+    <div id="qCounter" class="muted hidden" style="font-size:14px"></div>
+    <div id="timer" class="timer hidden" aria-live="off">--:--</div>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1) หน้าเริ่มสอบ -->
+  <section id="vStart" class="card hidden">
+    <h1>แบบทดสอบปรนัย CBT (20%)</h1>
+    <p class="muted">013736 Theories of Contemporary Counseling (CBT)</p>
+    <div class="alert"><b>ทำได้ครั้งเดียวเท่านั้น</b> — เมื่อกดเริ่มแล้ว ห้ามปิดแท็บ ห้ามรีเฟรช และห้ามกดย้อนกลับ จนกว่าจะส่งข้อสอบ ตรวจสอบอินเทอร์เน็ตและแบตเตอรี่ให้พร้อมก่อนเริ่ม</div>
+    <ul class="rules">
+      <li>ข้อสอบเลือกตอบ 40 ข้อ ข้อละ 0.5 คะแนน (20 คะแนน) แบบเปิดตำรา</li>
+      <li>แสดงทีละข้อ เมื่อยืนยันคำตอบแล้ว <b>ย้อนกลับไม่ได้</b></li>
+      <li>เวลาทำข้อสอบ <b id="ruleMin"></b> นาที นับตั้งแต่กดเริ่ม เมื่อหมดเวลาระบบส่งคำตอบให้อัตโนมัติ (ข้อที่ยังไม่ตอบได้ 0 คะแนน)</li>
+      <li>หากเผลอรีเฟรช เวลาจะเดินต่อและกลับมาที่ข้อเดิม (ข้อที่ตอบไปแล้วแก้ไม่ได้)</li>
+      <li>ระบบไม่แสดงคะแนนหลังส่ง อาจารย์จะแจ้งผลภายหลัง</li>
+      <li>ระบบบันทึกจำนวนครั้งที่ออกจากหน้าต่างข้อสอบ</li>
+    </ul>
+    <label class="f" for="inId">รหัสนักศึกษา</label>
+    <input id="inId" type="text" inputmode="numeric" autocomplete="off" placeholder="เช่น 680132xxx">
+    <label class="f" for="inName">ชื่อ–นามสกุล</label>
+    <input id="inName" type="text" autocomplete="off">
+    <label class="check"><input id="inAgree" type="checkbox"> ข้าพเจ้ารับทราบเงื่อนไขและจะทำข้อสอบด้วยตนเอง</label>
+    <div class="row"><button id="btnStart" class="btn" disabled>เริ่มทำข้อสอบ</button></div>
+  </section>
+
+  <!-- 2) หน้าข้อสอบ -->
+  <section id="vQuiz" class="card hidden">
+    <div class="meta"><span id="qClo" class="tag"></span><span id="qTopic" class="tag gray"></span></div>
+    <div id="qCase" class="case hidden"></div>
+    <div id="qStem" class="stem"></div>
+    <div id="qOpts" class="opts" role="radiogroup"></div>
+    <div class="row">
+      <button id="btnNext" class="btn" disabled>ยืนยันคำตอบและไปข้อถัดไป</button>
+    </div>
+    <p class="note">เมื่อกดยืนยันแล้วจะแก้ไขคำตอบข้อนี้ไม่ได้</p>
+  </section>
+
+  <!-- 3) หน้าผลสอบ -->
+  <section id="vDone" class="card hidden">
+    <h1>ส่งข้อสอบเรียบร้อย</h1>
+    <p id="doneWho" class="muted"></p>
+    <div>รหัสยืนยันการส่ง<br><span id="receipt" class="receipt"></span></div>
+    <div id="scoreBox">
+      <div class="score" id="scoreTotal"></div>
+      <table class="res">
+        <thead><tr><th>ส่วน</th><th class="n" style="text-align:right">ถูก</th><th class="n" style="text-align:right">คะแนน</th></tr></thead>
+        <tbody id="scoreRows"></tbody>
+      </table>
+    </div>
+    <p id="doneMeta" class="muted" style="font-size:14px"></p>
+    <div id="submitStatus" class="status"></div>
+    <div class="row">
+      <button id="btnDownload" class="btn ghost">ดาวน์โหลดไฟล์ผลสอบ (.json)</button>
+      <button id="btnRetry" class="btn ghost hidden">ส่งอีกครั้ง</button>
+    </div>
+  </section>
+
+  <!-- 4) หน้าเคยทำแล้ว -->
+  <section id="vLocked" class="card hidden">
+    <h1>คุณส่งข้อสอบชุดนี้แล้ว</h1>
+    <p class="muted">ข้อสอบนี้ทำได้ครั้งเดียว หากมีปัญหาโปรดติดต่ออาจารย์ผู้สอน</p>
+    <div class="row"><button id="btnShowResult" class="btn ghost">ดูรหัสยืนยันการส่ง</button></div>
+  </section>
+</main>
+
+<!-- กล่องยืนยันส่ง -->
+<div id="mConfirm" class="modal" role="dialog" aria-modal="true">
+  <div class="card">
+    <h2>ส่งข้อสอบ?</h2>
+    <p>นี่คือข้อสุดท้าย เมื่อยืนยันแล้วระบบจะส่งคำตอบทั้งหมดทันที</p>
+    <div class="row"><button id="mOk" class="btn">ยืนยันส่ง</button><button id="mCancel" class="btn ghost">ยังไม่ส่ง</button></div>
+  </div>
+</div>
+
+<script id="exam-data" type="application/json">{"cases": {"case1": "น้องมิ้นท์ นักศึกษาปี 3 เป็นหัวหน้ากลุ่มทำรายงาน รายงานส่งช้าและถูกหักคะแนน เธอบอกผู้ให้การปรึกษาว่า \"ทั้งหมดเป็นเพราะหนูตามงานเพื่อนไม่ดีพอ\" ให้ความเชื่อ 90% และรู้สึกผิดจนนอนไม่หลับ", "case2": "คุณพลอย พนักงานบริษัท เชื่อว่า \"ถ้าการนำเสนอไม่สมบูรณ์แบบ แสดงว่าฉันล้มเหลว\" ให้ความเชื่อ 85% หลังนำเสนอเมื่อวาน เธอพูดได้ครบ มีเพื่อนบางคนชม แต่ตอบคำถามหัวหน้าได้ไม่ดี จึงรู้สึกหดหู่ทั้งวัน"}, "questions": [{"no": 1, "clo": 1, "topic": "Pie Chart", "stem": "คุณแม่วัย 40 ปีเล่าว่า \"การที่ลูกไม่ยอมอ่านหนังสือและติดเกม เป็นเพราะฉันเป็นแม่ที่ล้มเหลว\" และให้คะแนนความเชื่อ 95% นักศึกษาฝึกงานเลือกใช้เทคนิค Pie Chart คำอธิบายใดสนับสนุนการเลือกนี้ได้ถูกต้องตามหลักการของเทคนิคมากที่สุด", "options": ["เพื่อให้เห็นว่า \"ความเป็นแม่ที่ดี\" มีหลายระดับ ไม่ใช่เพียงดีหรือล้มเหลว", "เป็นเทคนิคทางความคิดที่ท้าทายการคิดเข้าตัว ช่วยให้เห็นภาพรวมของปัจจัยต่างๆ ที่ทำให้เหตุการณ์เกิดขึ้น แทนการโทษตนเองเพียงอย่างเดียว", "เป็นงานส่วนพฤติกรรมที่เปลี่ยนพฤติกรรมการเลี้ยงลูกก่อน แล้วอารมณ์จะเปลี่ยนตาม", "เพื่อวิเคราะห์ผลกรรมที่ตามมาหลังพฤติกรรมติดเกมของลูกว่าเป็นการเสริมแรงหรือการลงโทษ"], "answer": 1}, {"no": 2, "clo": 1, "topic": "Pie Chart", "stem": "ผู้รับบริการเชื่อว่า \"งานล้มเหลวเพราะฉัน\" หลังทำ Pie Chart เขาพบว่าตนเองมีส่วนเพียง 20% ไม่ใช่ 100% และบอกว่า \"ความรู้สึกผิดที่แบกไว้เบาลงมาก\" ผลนี้สอดคล้องกับวัตถุประสงค์ข้อใดของ Pie Chart ที่เอกสารอ้างอิง Kennerley et al. (2017) มากที่สุด", "options": ["ลดความรู้สึกผิดและความละอายใจ (Reduce Guilt and Shame)", "ลดมาตรฐานที่สูงเกินไป (Reduce Perfectionism)", "เพิ่มความเห็นอกเห็นใจตนเอง (Enhance Self-Compassion)", "ท้าทายการคิดแบบสองขั้ว (Challenge Dichotomous Thinking)"], "answer": 0}, {"no": 3, "clo": 1, "topic": "Pie Chart", "stem": "ระหว่างทำ Pie Chart ผู้บำบัดช่วยผู้รับบริการจดปัจจัย \"ทีมงานไม่ส่งงานตามกำหนด / งบประมาณไม่พอ / เวลาสั้นเกินไป\" ผู้รับบริการถามว่า \"ทำไมยังไม่ใส่ส่วนของผมลงไป\" คำอธิบายใดสอดคล้องกับขั้นตอนตาม Beck (2020) และ Greenberger & Padesky (2016)", "options": ["ตนเองต้องใส่เป็นปัจจัยแรกเสมอ เพราะผู้รับบริการเชื่อว่าตนมีผลกระทบมากที่สุด", "ไม่ควรใส่ส่วนของตนเองเลย เพราะเป้าหมายคือให้ความรู้สึกผิดเป็นศูนย์", "ช่วงแรกจดปัจจัยอื่นโดยไม่รวมตนเอง แบ่งวงกลมให้ปัจจัยอื่นก่อน แล้วจึงเพิ่มส่วนของตนเองลงในพื้นที่ที่เหลือ", "ส่วนของตนเองจะประเมินในการบ้าน และนำมาทบทวนในครั้งถัดไป"], "answer": 2}, {"no": 4, "clo": 1, "topic": "Pie Chart", "stem": "นักศึกษาปริญญาโทกังวลว่า \"ถ้าสอบหัวข้อไม่ผ่าน ชีวิตพังทั้งหมด\" ผู้บำบัดให้เขาแบ่งวงกลมตามความน่าจะเป็นของผลลัพธ์ต่างๆ เช่น ผ่าน / ผ่านแบบแก้ไข / ต้องสอบใหม่ คำอธิบายใดถูกต้องที่สุด", "options": ["เป็นการใช้เทคนิคนอกขอบเขต เพราะ Pie Chart ใช้ได้เฉพาะกับการคิดเข้าตัวเท่านั้น", "เป็นการใช้ Continuum ของมาตรฐาน (Standard Continuum)", "เป็นการเปลี่ยนเหตุการณ์กระตุ้น (A) ตามแนวคิด REBT เพื่อลดผลทางอารมณ์ (C)", "เป็นการใช้ Pie Chart ปรับแก้ความคิดแบบ All-or-Nothing / Catastrophizing โดยประเมินความน่าจะเป็นของผลลัพธ์ต่างๆ จาก 0–100%"], "answer": 3}, {"no": 5, "clo": 1, "topic": "Continuum", "stem": "ผู้รับบริการที่มีภาวะซึมเศร้าพูดซ้ำๆ ว่า \"ถ้าฉันไม่ใช่คนดีที่สุด ฉันก็เป็นคนแย่\" ข้อใดอธิบายรูปแบบความคิดและเทคนิคที่ตรงเป้าหมายได้ถูกต้องที่สุด", "options": ["คิดเข้าตัว (Personalization) — ใช้ Pie Chart กระจายความรับผิดชอบ", "คิดแบบสองขั้ว (Dichotomous thinking) — ใช้ Continuum ให้เห็นว่าความเป็นจริงอยู่บนสเปกตรัมที่ต่อเนื่อง", "ทายอนาคตด้านลบ (Fortune telling) — ใช้คำถามมิติประโยชน์ของความคิด", "ใช้อารมณ์เป็นเหตุผล (Emotional reasoning) — ใช้ Behavioral work เปลี่ยนอารมณ์ก่อน"], "answer": 1}, {"no": 6, "clo": 1, "topic": "Continuum", "stem": "นักศึกษาปริญญาโทไม่ยอมส่งรายงานเพราะเชื่อว่า \"ต้องไม่มีที่ติแม้แต่จุดเดียว\" ผู้บำบัดวางเส้นต่อเนื่องของ \"ความสมบูรณ์แบบ\" และชวนสำรวจว่า \"ดีพอสมควร\" คืออะไร นี่คือ Continuum ประเภทใด", "options": ["Continuum ของมาตรฐาน (Standard Continuum)", "Continuum ของคุณลักษณะ (Trait Continuum)", "Continuum ของผลลัพธ์ (Outcome Continuum)", "Continuum ของความรับผิดชอบ (Responsibility Continuum)"], "answer": 0}, {"no": 7, "clo": 1, "topic": "Continuum", "stem": "ผู้รับบริการพูดว่า \"ฉันเคยโกหกแม่เรื่องเกรด ฉันจึงเป็นคนเลว\" หากผู้บำบัดต้องการใช้ Continuum ให้ตรงกับเนื้อหาความคิดนี้ ควรเลือกประเภทใดและมุ่งให้เห็นอะไร", "options": ["Outcome Continuum — ให้เห็นว่าการโกหกครั้งนั้นสำเร็จหรือล้มเหลวเพียงใด", "Standard Continuum — ให้เห็นว่าความซื่อสัตย์ไม่จำเป็นต้องสมบูรณ์แบบ", "Pie Chart — ให้เห็นปัจจัยอื่นที่ทำให้ต้องโกหก", "Trait Continuum — ให้เห็นว่า \"ความดี\" มีหลายระดับ และทุกคนมีทั้งจุดเด่นและจุดด้อย"], "answer": 3}, {"no": 8, "clo": 1, "topic": "Continuum", "stem": "หลังวางตำแหน่งตนเองที่ 60% บนเส้นต่อเนื่อง ผู้รับบริการกล่าวว่า \"ฉันไม่ได้แย่ที่สุดอย่างที่คิด รู้สึกอ่อนโยนกับตัวเองมากขึ้น\" คำพูดนี้สะท้อนวัตถุประสงค์ข้อใดของเทคนิค Continuum ชัดเจนที่สุด", "options": ["ลดการคิดเข้าตัว (Reduce Personalization)", "ลดความรู้สึกผิดและความละอายใจ (Reduce Guilt and Shame)", "เพิ่มความเห็นอกเห็นใจตนเอง (Enhance Self-Compassion)", "เพิ่มมุมมองที่สมดุลผ่านปัจจัยภายนอก (Promote Balanced Perspective)"], "answer": 2}, {"no": 9, "clo": 1, "topic": "หลักการ CBT", "stem": "นักจิตวิทยาฝึกหัดบอกผู้รับบริการตลอดชั่วโมงว่าปัญหาคืออะไรและต้องทำอะไร โดยไม่ถามความเห็น ผู้รับบริการนั่งเฉยและไม่ทำตามนอกชั่วโมง พฤติกรรมของผู้ฝึกหัดขัดกับหลักการใดชัดเจนที่สุด", "options": ["Collaboration — ผู้บำบัดเชี่ยวชาญกระบวนการ คนไข้เชี่ยวชาญชีวิต/ประสบการณ์ตนเอง ต้องทำงานร่วมกันอย่าง Active", "Here and Now Principle — ต้องเน้นปัญหาปัจจุบันก่อน", "Behavioral work — ต้องเปลี่ยนพฤติกรรมก่อนความคิด", "Problem-Oriented Approach — ต้องทำให้ปัญหาเจาะจง"], "answer": 0}, {"no": 10, "clo": 1, "topic": "หลักการ CBT", "stem": "ผู้รับบริการมาด้วยอาการตื่นตระหนกทุกครั้งที่ต้องพรีเซนต์งานสัปดาห์นี้ แต่ต้องการเล่าเรื่องในวัยเด็กตลอดทุกชั่วโมง ผู้บำบัดอธิบายว่าจะจัดการเรื่องพรีเซนต์ก่อน และจะกลับไปดูเรื่องในอดีตหลังทำ Formulation แล้ว การตัดสินใจนี้อิงหลักการใดและด้วยเหตุผลใด", "options": ["Empirical Approach — เพราะเรื่องในอดีตพิสูจน์ไม่ได้", "Here and Now Principle — จัดการปัญหาปัจจุบันก่อนเพื่อให้ดีขึ้นได้เร็ว เกิดความหวังและกำลังใจ", "Structure — เพราะต้องแบ่งเวลาช่วงต้น กลาง ท้ายให้เท่ากัน", "Learning and Growth — เพราะอดีตไม่เกี่ยวกับการเติบโต"], "answer": 1}, {"no": 11, "clo": 1, "topic": "หลักการ CBT", "stem": "ผู้รับบริการบอกว่า \"อยากให้ชีวิตดีขึ้น\" ผู้บำบัดช่วยเรียบเรียงเป็นข้อๆ เช่น \"กลับไปทำงานได้ 4 วันต่อสัปดาห์\" คำอธิบายใดตรงกับประโยชน์ของ Goal-Oriented Approach ตามเอกสารครบถ้วนที่สุด", "options": ["ทำให้ผู้บำบัดกำหนดจำนวนครั้งที่จะพบได้แน่นอน", "ทำให้ไม่ต้องทำ Formulation เพราะเป้าหมายชัดแล้ว", "ทำให้ผู้รับบริการเข้าใจสาเหตุในอดีตของปัญหา", "ทำให้ผู้รับบริการมองเห็นภาพเมื่อสิ้นสุดการบำบัด เกิดความหวัง (Hope) แรงจูงใจ (Motivation) และประเมินความก้าวหน้าได้ (Progress)"], "answer": 3}, {"no": 12, "clo": 1, "topic": "หลักการ CBT", "stem": "ผู้บำบัดตั้งสมมติฐานว่าผู้รับบริการหลีกเลี่ยงงานสังคมเพราะกลัวถูกปฏิเสธ แต่พูดว่า \"ผมอาจคิดผิดก็ได้ ลองออกแบบการทดลองเล็กๆ ดูด้วยกันไหมครับ\" คำพูดนี้สะท้อนหลักการใดมากที่สุด", "options": ["Structure — กำหนดกิจกรรมช่วงท้ายชั่วโมง", "Cognitive work — ทำงานกับความคิดที่มีความนามธรรมสูง", "Empirical Approach — ความคิดของผู้บำบัดอาจถูกหรือผิดก็ได้ ขึ้นอยู่กับข้อเท็จจริง หาหลักฐานได้เช่น Behavioral experiment", "Goal-Oriented Approach — กำหนดเป้าหมายทางสังคม"], "answer": 2}, {"no": 13, "clo": 1, "topic": "หลักการ CBT", "stem": "ผู้บำบัดพบว่าเยาวชนอายุ 13 ปีเข้าใจคำว่า \"ความคิดอัตโนมัติ\" ได้ยาก จึงปรับใช้ภาพการ์ตูนและตัวอย่างรูปธรรมแทน การปรับนี้สอดคล้องกับหลักการใดตามเอกสาร", "options": ["Cognitive work — เทคนิคทางความคิดซับซ้อนและนามธรรมค่อนข้างสูง คนไข้เข้าใจไม่เท่ากัน ควรปรับตามพัฒนาการและสภาพจิตใจ", "Behavioral work — เด็กควรได้รับเฉพาะเทคนิคพฤติกรรม", "Guided Discovery — ผู้บำบัดควรบอกคำตอบให้เด็กโดยตรง", "Problem-Oriented Approach — ควรลดจำนวนปัญหาที่พูดถึง"], "answer": 0}, {"no": 14, "clo": 1, "topic": "Socratic Questioning", "stem": "ผู้รับบริการโทษตนเองที่พลาดทุน ผู้บำบัดถามว่า \"ถ้าเพื่อนสนิทเจอเรื่องเดียวกัน คุณจะมองและบอกเขาว่าอย่างไร\" คำถามนี้อยู่ในมิติใดของการตั้งคำถาม 5 มิติหลัก", "options": ["ถามหาหลักฐานเชิงประจักษ์ (Evidence)", "ถามหามุมมองทางเลือก (Alternative Perspectives)", "ประเมินผลลัพธ์ที่เป็นจริง (Decatastrophizing / Consequences)", "ตรวจสอบประโยชน์ของความคิด (Usefulness / Impact)"], "answer": 1}, {"no": 15, "clo": 1, "topic": "Socratic Questioning", "stem": "ผู้รับบริการยอมรับว่าความคิด \"ฉันต้องทำทุกอย่างเอง\" อาจไม่ผิดทั้งหมด ผู้บำบัดจึงถามต่อว่า \"การคิดแบบนี้ส่งผลดีหรือผลเสียต่อความรู้สึกและพฤติกรรมของคุณอย่างไร\" เหตุผลเชิงทฤษฎีของคำถามนี้คืออะไร", "options": ["เป็นมิติ Evidence เพื่อหาหลักฐานที่ขัดแย้งกับความคิด", "เป็นมิติ Balanced Thought เพื่อสรุปความคิดใหม่", "เป็นการตัดสินแทนผู้รับบริการว่าความคิดนี้ไม่มีประโยชน์", "เป็นมิติ Usefulness / Impact — ชวนให้พิจารณาผลของความคิดต่ออารมณ์และพฤติกรรม แม้ความคิดนั้นจะมีส่วนจริง"], "answer": 3}, {"no": 16, "clo": 1, "topic": "Socratic Questioning", "stem": "ในการซ้อมบทบาท ผู้ฝึกคนหนึ่งใช้น้ำเสียงอบอุ่น ท่าทีสงสัยใคร่รู้ พูดว่า \"น่าสนใจมาก แล้วคิดว่า…\" โดยไม่ตัดสินถูกผิด และวางตัวเป็นผู้ร่วมสำรวจ พฤติกรรมนี้ตรงกับแนวฝึกใด", "options": ["ฝึกทบทวนตนเองผ่าน Thought Record (Self-Reflection)", "เปลี่ยนประโยคบอกเล่าเป็นคำถามปลายเปิด (Curiosity Shift)", "เทคนิค Columbo Approach ที่วางตัวแบบ Collaborative Empiricism ไม่ใช่ผู้ตรวจสอบ", "การให้ความรู้ (Educate) ตาม Empirical Approach"], "answer": 2}, {"no": 17, "clo": 1, "topic": "NATs / ความคิดบิดเบือน", "stem": "พนักงานคนหนึ่งคิดว่า \"เพื่อนร่วมงานไม่ตอบไลน์ แปลว่าเขาไม่พอใจและไม่อยากคุยกับฉันแล้ว\" และกระวนกระวายทั้งคืน ความคิดนี้เข้ากับ \"สัตว์ประหลาดทางความคิด\" แบบใดชัดเจนที่สุด", "options": ["อ่านใจคนอื่น (Mind reading)", "ทายอนาคตด้านลบ (Fortune telling)", "คิดตีตรา (Labeling)", "คิดแบบควร/ต้อง (Should/Must)"], "answer": 0}, {"no": 18, "clo": 1, "topic": "NATs / ความคิดบิดเบือน", "stem": "ผู้รับบริการกล่าวว่า \"ฉันรู้สึกไร้ค่ามากเลยสัปดาห์นี้ มันก็ต้องแปลว่าฉันไร้ค่าจริงๆ\" ความคิดนี้เข้ากับความคิดบิดเบือนแบบใดมากที่สุด", "options": ["เลือกคิดเลือกเชื่อ (Mental filter)", "คิดตีตรา (Labeling)", "คิดข้ามเรื่องดีๆ (Discounting the positive)", "ใช้อารมณ์เป็นเหตุผล (Emotional reasoning)"], "answer": 3}, {"no": 19, "clo": 1, "topic": "ABC model", "stem": "บัณฑิตใหม่ได้รับจดหมายปฏิเสธงาน และคิดว่า \"ฉันต้องสำเร็จตั้งแต่ครั้งแรก\" จากนั้นเศร้าและแยกตัว เมื่ออธิบายตามแนวคิด REBT (Albert Ellis) ข้อใดถูกต้องที่สุด", "options": ["จดหมายปฏิเสธ (A) ทำให้เกิดความเศร้า (C) โดยตรง จึงควรเน้นหางานใหม่", "เหตุการณ์ (A) ไม่ได้สร้างผล (C) โดยตรง แต่ขึ้นอยู่กับการตีความและความเชื่อ (B) ซึ่งในกรณีนี้เป็นความเชื่อแบบไร้เหตุผล/ยึดติด", "การแยกตัว (B) ถูกเสริมแรงด้วยผลกรรมที่ตามมา (C)", "ความเชื่อ \"ฉันต้องสำเร็จ\" เป็นความเชื่อสมเหตุสมผลที่ควรคงไว้"], "answer": 1}, {"no": 20, "clo": 1, "topic": "ABC model", "stem": "วัยรุ่นคนหนึ่งมักกินขนมขบเคี้ยวพร้อมเล่นโทรศัพท์หลังอาหารเย็นในวันที่เครียด และรู้สึกผ่อนคลายทันที หากวิเคราะห์ตามแนวคิดพฤติกรรมนิยม (Behavioral Analysis / Functional Assessment) ข้อใดระบุ A-B-C ได้ถูกต้อง", "options": ["A = ความเครียด, B = ความเชื่อ \"ฉันสมควรได้รางวัล\", C = กินขนม", "A = กินขนม, B = เล่นโทรศัพท์, C = ความเครียด", "A = ช่วงหลังอาหารเย็นและความเครียด, B = กินขนมขณะเล่นโทรศัพท์, C = ความผ่อนคลายทันทีซึ่งเป็นการเสริมแรงให้พฤติกรรมเกิดซ้ำ", "A = ความคิดอัตโนมัติ, B = กินขนม, C = การลงโทษ"], "answer": 2}, {"no": 21, "clo": 2, "topic": "Pie Chart", "stem": "ผู้ให้การปรึกษาระบุสถานการณ์ ความคิดอัตโนมัติ และระดับความเชื่อแล้ว การตอบสนองใดเหมาะสมที่สุดสำหรับขั้นตอนถัดไป", "options": ["\"จริงๆ แล้วไม่ใช่ความผิดของมิ้นท์คนเดียวหรอก เพื่อนก็ผิดด้วย\"", "\"ลองวาดวงกลมแล้วแบ่งส่วนของมิ้นท์ก่อนเลยว่ามีกี่เปอร์เซ็นต์\"", "\"นอกจากตัวมิ้นท์เอง มีคนอื่นหรือสถานการณ์อื่นที่มีส่วนเกี่ยวข้องกับการส่งช้าครั้งนี้บ้างไหม\"", "\"กลับไปลองทำ Pie Chart ที่บ้านแล้วค่อยมาคุยกันสัปดาห์หน้า\""], "answer": 2, "caseId": "case1"}, {"no": 22, "clo": 2, "topic": "Pie Chart", "stem": "มิ้นท์ระบุปัจจัยได้ 5 ปัจจัย ได้แก่ เพื่อน 2 คนส่งงานช้า อินเทอร์เน็ตหอพักล่ม อาจารย์เลื่อนกำหนดส่งเร็วขึ้น โจทย์ไม่ชัดเจน และสอบกลางภาคชนกัน การดำเนินการขั้นต่อไปใดสอดคล้องกับขั้นตอนที่ 4 มากที่สุด", "options": ["ให้มิ้นท์แบ่งวงกลมเอง เริ่มจากปัจจัยที่มีผลกระทบมากที่สุดก่อน ปัจจัยที่มีส่วนมากได้พื้นที่มาก มีส่วนน้อยได้พื้นที่น้อย", "ผู้ให้การปรึกษากำหนดสัดส่วนให้เองตามความเหมาะสม เพื่อป้องกันอคติของผู้รับบริการ", "แบ่งทุกปัจจัยเท่ากันปัจจัยละ 20% เพื่อความเป็นกลาง", "ให้มิ้นท์กำหนดส่วนของตนเองก่อน แล้วนำพื้นที่ที่เหลือมาแบ่งให้ปัจจัยอื่น"], "answer": 0, "caseId": "case1"}, {"no": 23, "clo": 2, "topic": "Pie Chart", "stem": "นักศึกษาฝึกงานอีกคนหนึ่งทำกรณีเดียวกัน โดยพูดว่า \"ปัจจัยจริงๆ คือเพื่อนไม่รับผิดชอบ อาจารย์เลื่อนกำหนด และอินเทอร์เน็ตล่ม ผมใส่ให้เลยนะ\" แล้วเติมเปอร์เซ็นต์เองทั้งหมด ผู้นิเทศควรให้ feedback ใดตามข้อควรระวังในเอกสาร", "options": ["ควรใส่ส่วนของผู้รับบริการเป็น 0% เพื่อให้ความรู้สึกผิดหายไป", "ควรเปลี่ยนไปใช้ Continuum เพราะผู้รับบริการคิดแบบสองขั้ว", "ทำถูกต้องแล้ว เพราะประหยัดเวลาตามหลัก Structure", "ไม่ควรบอกคำตอบตรงๆ ควรใช้ Socratic questioning ชักนำให้ผู้รับบริการค้นพบปัจจัยและแบ่งสัดส่วนด้วยตนเอง (Guided Discovery)"], "answer": 3, "caseId": "case1"}, {"no": 24, "clo": 2, "topic": "Pie Chart", "stem": "หลังเติมส่วนของตนเองลงในพื้นที่ที่เหลือ มิ้นท์พบว่าตนมีส่วน 25% ผู้ให้การปรึกษาควรทำอะไรต่อในขั้นตอนที่ 6", "options": ["สรุปให้ฟังว่า \"เห็นไหม ความคิดเดิมผิด\" แล้วปิดชั่วโมง", "ให้ประเมินความเชื่อในความคิดเดิมอีกครั้ง (0–100%) สังเกตการเปลี่ยนแปลงของอารมณ์ และสะท้อนการเรียนรู้", "ให้เทียบกับเกณฑ์ว่า 25% ยังสูงเกินไปหรือไม่", "ทำ Pie Chart ซ้ำจนกว่าส่วนของตนเองจะต่ำกว่า 10%"], "answer": 1, "caseId": "case1"}, {"no": 25, "clo": 2, "topic": "Pie Chart", "stem": "คุณแม่คนหนึ่งคิดว่า \"ลูกสอบตกเพราะฉันเป็นแม่ที่แย่\" (ความเชื่อ 100%) เธอแบ่งปัจจัยอื่นได้ดังนี้: ลูกไม่ทบทวนบทเรียน 25% ข้อสอบยากกว่าปกติ 20% ลูกนอนดึกเล่นเกม 20% ครูสอนเร็วจนตามไม่ทัน 15% จากนั้นเติมส่วนของตนเองลงในพื้นที่ที่เหลือ ข้อใดตีความผลและสะท้อนความคิดทางเลือกที่สมดุลได้เหมาะสมที่สุด", "options": ["ส่วนของแม่ 80% — \"ฉันเป็นสาเหตุหลักจริงๆ\"", "ส่วนของแม่ 0% — \"ฉันไม่ได้มีส่วนเกี่ยวข้องเลย\"", "ส่วนของแม่ 20% — \"ฉันมีส่วนอยู่บ้าง แต่ผลสอบเกิดจากหลายปัจจัย ไม่ใช่เพราะฉันทั้งหมด\"", "ส่วนของแม่ 20% — \"แม้จะ 20% แต่ก็ยังแปลว่าฉันเป็นแม่ที่แย่\""], "answer": 2}, {"no": 26, "clo": 2, "topic": "Pie Chart", "stem": "คุณแม่ที่เคยคิดว่า \"ลูกสอบตกเพราะฉันเป็นแม่ที่แย่\" เล่าว่ามักโทษตัวเองในหลายเรื่อง เช่น สามีอารมณ์ไม่ดี หรืองานบ้านเสร็จไม่ทัน การบ้านใดสอดคล้องกับขั้นตอนที่ 7 ของ Pie Chart มากที่สุด", "options": ["ฝึกใช้ Pie Chart กับสถานการณ์อื่นที่ตนเองมักโทษตัวเอง และนำมาติดตามผลและสะท้อนประสบการณ์ในการพบครั้งถัดไป", "ฝึกวาง Continuum ของความเป็นแม่ที่ดีทุกคืน", "หลีกเลี่ยงการคิดถึงเหตุการณ์เชิงลบในสัปดาห์นี้", "ให้สามีเป็นผู้แบ่งสัดส่วนความรับผิดชอบแทน"], "answer": 0}, {"no": 27, "clo": 2, "topic": "Continuum", "stem": "หลังระบุความคิดแบบสองขั้วและระดับความเชื่อแล้ว ผู้ให้การปรึกษาควรทำอะไรต่อ", "options": ["ให้คุณพลอยวางตำแหน่งตนเองทันทีว่าอยู่ตรงไหน", "ให้จดปัจจัยทั้งหมดที่ทำให้การนำเสนอไม่สมบูรณ์แบบ", "บอกคุณพลอยว่าไม่มีใครนำเสนอได้สมบูรณ์แบบ", "วาดเส้นตรงแนวนอน กำหนดจุดสุดขั้ว 0% และ 100% และให้คุณพลอยกำหนดคำอธิบายของแต่ละสุดขั้วเอง"], "answer": 3, "caseId": "case2"}, {"no": 28, "clo": 2, "topic": "Continuum", "stem": "ในขั้นกำหนดจุดอ้างอิง วิธีใดสอดคล้องกับ Beck (2020) และ Kennerley et al. (2017) มากที่สุด", "options": ["ผู้ให้การปรึกษาเตรียมจุดอ้างอิงมาตรฐานไว้ล่วงหน้าแล้วให้คุณพลอยท่องจำ", "ให้คุณพลอยคิดตัวอย่างจริงของการนำเสนอที่อยู่ตามจุดต่างๆ เริ่มจากสุดขั้ว เช่น 0% = พูดไม่ออกต้องหนีออกจากห้อง, 100% = ทุกคนเข้าใจ ไม่มีคำถาม ได้คำชมจากทุกคน แล้วค่อยเติมจุดระหว่างกลาง", "ใช้คะแนนประเมินจากหัวหน้าเป็นจุดอ้างอิงเพียงจุดเดียว", "เริ่มจากจุด 50% ก่อน เพราะสุดขั้วจะยิ่งเสริมความคิดแบบสองขั้ว"], "answer": 1, "caseId": "case2"}, {"no": 29, "clo": 2, "topic": "Continuum", "stem": "คุณพลอยวางตำแหน่งตนเองที่ประมาณ 60% คำถามใดเหมาะสมที่สุดสำหรับขั้นตอนสำรวจมุมมองใหม่", "options": ["\"ทำไมคุณถึงคิดอะไรไม่มีเหตุผลแบบนั้น\"", "\"เห็นไหมคะ คุณควรพอใจได้แล้ว\"", "\"ความคิดเดิมที่ว่า ‘ถ้าไม่สมบูรณ์แบบก็คือล้มเหลว’ ยังเป็นจริงอยู่ไหม\"", "\"ครั้งหน้าคุณต้องทำให้ได้ 100% ให้ได้นะ\""], "answer": 2, "caseId": "case2"}, {"no": 30, "clo": 2, "topic": "Continuum", "stem": "นักศึกษาคนหนึ่งสอบได้ 78 คะแนนและคิดว่า \"ถ้าฉันไม่ได้ 100 คะแนน แสดงว่าฉันโง่\" ผู้บำบัดสร้างจุดอ้างอิงตามตัวอย่างในเอกสาร (0–10% บกพร่องทางสติปัญญารุนแรง, 50% คนทั่วไป IQ ปานกลาง, 75% ผลการเรียนดี แก้ปัญหาซับซ้อนได้, 90–100% นักวิทยาศาสตร์ระดับโนเบล) ผลลัพธ์ที่คาดหวังจากการใช้เทคนิคนี้คือข้อใด", "options": ["เมื่อวางตัวเองที่ประมาณ 70–80% นักศึกษาเห็นว่าแม้ไม่ได้ 100 คะแนน ก็ไม่ได้หมายความว่าโง่ และยังอยู่ในระดับที่ดีมาก", "นักศึกษาควรวางตัวเองที่ 50% เพื่อยอมรับว่าเป็นคนธรรมดา", "นักศึกษาเห็นว่าตนเองมีส่วนทำให้พลาด 22 คะแนนเพียงบางส่วน", "นักศึกษาตั้งเป้าหมายใหม่ว่าจะต้องอยู่ที่ 90–100% ในครั้งต่อไป"], "answer": 0}, {"no": 31, "clo": 2, "topic": "Continuum", "stem": "นักศึกษาปริญญาโทได้บทที่ 2 คืนจากอาจารย์ที่ปรึกษาพร้อมคำแนะนำให้แก้หลายจุด และสรุปว่า \"งานชิ้นนี้ล้มเหลวสิ้นเชิง\" ผู้ให้การปรึกษาควรเลือกใช้เทคนิคใดให้ตรงกับเนื้อหาความคิดที่สุด", "options": ["Trait Continuum เพื่อประเมินบุคลิกภาพของนักศึกษา", "Pie Chart เพื่อแบ่งความรับผิดชอบระหว่างนักศึกษากับอาจารย์", "Standard Continuum เพื่อลดมาตรฐานของอาจารย์", "Outcome Continuum เพื่อให้เห็นว่าผลลัพธ์ของงานมีหลายระดับ ไม่ใช่เพียงสำเร็จหรือล้มเหลว"], "answer": 3}, {"no": 32, "clo": 2, "topic": "Socratic Questioning", "stem": "ผู้รับบริการกล่าวว่า \"ถ้าพรุ่งนี้พรีเซนต์พลาด ทุกคนจะคิดว่าฉันไร้ความสามารถ แล้วฉันจะถูกไล่ออก\" ผู้ให้การปรึกษาต้องการใช้มิติประเมินผลลัพธ์ที่เป็นจริง คำถามใดเหมาะสมที่สุด", "options": ["\"มีหลักฐานอะไรที่สนับสนุนว่าคุณไร้ความสามารถ\"", "\"ผลลัพธ์ที่เป็นไปได้มากที่สุดตามความเป็นจริงคืออะไร และถ้าสิ่งที่แย่ที่สุดเกิดขึ้นจริง คุณจะรับมืออย่างไร\"", "\"ถ้าเพื่อนสนิทคิดแบบนี้ คุณจะบอกเขาว่าอย่างไร\"", "\"ไม่มีใครถูกไล่ออกเพราะพรีเซนต์พลาดครั้งเดียวหรอก\""], "answer": 1}, {"no": 33, "clo": 2, "topic": "Socratic Questioning", "stem": "ผู้รับบริการได้ทบทวนหลักฐานทั้งที่สนับสนุนและขัดแย้งความคิด สำรวจมุมมองทางเลือก และประโยชน์ของความคิดครบแล้ว คำถามใดเหมาะสมที่สุดที่จะใช้ปิดกระบวนการ", "options": ["\"เมื่อมองหลักฐานทั้งหมดแล้ว ข้อสรุปใหม่ที่ยุติธรรมและตรงความจริงกว่านี้คืออะไร\"", "\"สิ่งที่เลวร้ายที่สุดที่อาจเกิดขึ้นคืออะไร\"", "\"มีหลักฐานอะไรเพิ่มเติมที่สนับสนุนความคิดเดิมอีกไหม\"", "\"สรุปแล้วความคิดเดิมของคุณผิดใช่ไหม\""], "answer": 0}, {"no": 34, "clo": 2, "topic": "Socratic Questioning", "stem": "ในการนิเทศ ผู้ฝึกพูดกับผู้รับบริการว่า \"คุณคิดมากไปเอง หัวหน้าไม่ได้โกรธคุณหรอก\" ผู้นิเทศให้ฝึก \"เปลี่ยนประโยคบอกเล่าเป็นคำถามปลายเปิด (Curiosity Shift)\" ข้อใดเป็นการปรับที่เหมาะสมที่สุด", "options": ["\"คุณคิดมากไปเองใช่ไหม\"", "\"หัวหน้าไม่ได้โกรธ คุณเห็นด้วยไหม\"", "\"อะไรทำให้คุณคิดว่าหัวหน้าโกรธ และมีอะไรที่ไม่ตรงกับความคิดนี้บ้าง\"", "\"ทำไมคุณถึงคิดแบบนั้นอีกแล้ว\""], "answer": 2}, {"no": 35, "clo": 2, "topic": "หลักการ CBT", "stem": "ในชั่วโมงที่ 3 ผู้รับบริการระบายความรู้สึกตลอดชั่วโมงเหมือนสองครั้งแรก จนไม่เหลือเวลาทำงานตามแผน ผู้ให้การปรึกษาควรปรับการทำงานอย่างไรตามหลัก Structure", "options": ["ปล่อยให้ผู้รับบริการระบายต่อ เพราะการระบายสำคัญกว่าโครงสร้าง", "ยืดเวลาชั่วโมงออกไปจนกว่าจะทำงานได้ครบ", "ยกเลิกการบ้านเพื่อลดภาระของผู้รับบริการ", "ตกลงร่วมกันถึงการทำงานช่วงต้น กลาง ท้ายของชั่วโมง เพื่อให้ผู้รับบริการคุ้นเคยกับกระบวนการ เตรียมตัวเอง และนำทักษะไปจัดการปัญหาด้วยตนเองได้"], "answer": 3}, {"no": 36, "clo": 2, "topic": "หลักการ CBT", "stem": "ผู้รับบริการถามว่า \"ทำไมเราต้องมาวาดวงกลมแบ่งเปอร์เซ็นต์ด้วย\" การตอบสนองใดสะท้อนหลัก Formulation Based ได้ดีที่สุด", "options": ["\"เป็นเทคนิคมาตรฐานของ CBT ทุกคนต้องทำเหมือนกัน\"", "อธิบาย Formulation ว่าความคิดโทษตนเองเชื่อมกับความรู้สึกผิดอย่างไร เพื่อให้เข้าใจตรงกันว่าทำเพื่ออะไร และชวนผู้รับบริการร่วมปรับปรุงความเข้าใจนั้น", "\"เพราะผลวิจัยบอกว่าได้ผล คุณไม่จำเป็นต้องเข้าใจเหตุผล\"", "เปลี่ยนไปใช้เทคนิคอื่นทันทีเพื่อหลีกเลี่ยงแรงต้าน"], "answer": 1}, {"no": 37, "clo": 2, "topic": "การผสมผสานเทคนิค", "stem": "นักศึกษาสอบกลางภาควิชาสถิติได้เกรด C และคิดว่า \"การสอบครั้งนี้ล้มเหลวสิ้นเชิง และเป็นความผิดของฉันคนเดียว\" แผนการใช้เทคนิคใดสอดคล้องกับหลักการผสมผสานทั้งสองเทคนิคมากที่สุด", "options": ["ใช้ Pie Chart แสดงปัจจัยหลายด้านที่ทำให้เกิดผลสอบ และใช้ Continuum แสดงว่าผลสอบไม่ได้เป็นเพียง \"A\" หรือ \"F\" แต่มีหลายระดับ", "ใช้ Continuum แบ่งความรับผิดชอบ และใช้ Pie Chart ประเมินระดับความสำเร็จ", "ใช้เฉพาะ Pie Chart เพราะการใช้สองเทคนิคพร้อมกันจะสับสน", "ใช้ Standard Continuum เพื่อปรับเกณฑ์การตัดเกรดของอาจารย์"], "answer": 0}, {"no": 38, "clo": 2, "topic": "ข้อควรระวัง", "stem": "ผู้รับบริการพบผู้ให้การปรึกษาครั้งแรก มีท่าทีระแวดระวัง ตอบสั้นๆ ผู้ให้การปรึกษาเริ่ม Pie Chart ทันทีหลังได้ยินความคิดโทษตนเอง ผู้รับบริการตอบเพียง \"ไม่รู้\" ทุกคำถาม ข้อใดอธิบายปัญหาและแนวทางแก้ได้เหมาะสมที่สุด", "options": ["ผู้รับบริการเข้าใจเทคนิคภาพได้ยาก ควรเปลี่ยนไปใช้ Continuum แทน", "ผู้รับบริการต่อต้าน ควรบอกสัดส่วนที่เหมาะสมให้เลย", "เทคนิคจะได้ผลดีเมื่อผู้รับบริการไว้วางใจและพร้อมสำรวจความคิด จึงควรสร้างสัมพันธภาพและบรรยากาศที่ปลอดภัยก่อน", "ความคิดโทษตนเองยังไม่รุนแรงพอ ควรรอให้อาการหนักขึ้นก่อน"], "answer": 2}, {"no": 39, "clo": 2, "topic": "ABC model — Beckian", "stem": "ผู้รับบริการเล่าว่า \"วันจันทร์ 9 โมงในห้องประชุม หัวหน้าเรียกชื่อให้สรุปงาน ผมคิดทันทีว่า ‘ฉันทำไม่ได้’ เห็นภาพตัวเองพูดตะกุกตะกัก ใจสั่น แล้วก้มหน้าดูโน้ตบุ๊ก\" การบันทึกตามแนวคิด CBT แบบประยุกต์ (Beckian CBT Triangle / Thought Record) ข้อใดถูกต้องที่สุด", "options": ["A = \"ฉันทำไม่ได้\", B = ใจสั่น, C = หัวหน้าเรียกชื่อ — แล้วเริ่มปรับความคิดทันที", "A = หัวหน้า, B = การก้มหน้าดูโน้ตบุ๊ก, C = การเสริมแรงทางลบ", "A = ความเชื่อแบบไร้เหตุผล, B = ประชุมวันจันทร์, C = การหลีกเลี่ยง", "A = สถานการณ์ (วันจันทร์ 9 โมง ห้องประชุม ถูกเรียกชื่อ), B = ความคิดอัตโนมัติ/ภาพที่แวบขึ้นมา พร้อมระดับความเชื่อมั่น, C = อารมณ์ ร่างกาย (ใจสั่น) และพฤติกรรม (ก้มหน้า) — เพื่อฝึกรู้เท่าทันตนเองก่อนปรับความคิด"], "answer": 3}, {"no": 40, "clo": 2, "topic": "หลักการ CBT — Homework", "stem": "หลังทำ Continuum กับคุณพลอย เธอถามว่า \"ต้องทำการบ้านด้วยหรือ มาคุยทุกสัปดาห์ก็พอแล้วไม่ใช่เหรอ\" การตอบและการมอบหมายการบ้านใดสอดคล้องกับเนื้อหามากที่สุด", "options": ["การบ้านไม่จำเป็น หากผู้รับบริการเข้าใจเทคนิคในชั่วโมงแล้ว", "อธิบายว่าการบ้านคือการนำการบำบัดไปใช้ในชีวิตจริง คนที่ทำการบ้านได้ประโยชน์จาก CBT มากกว่า และมอบหมายให้บันทึกสถานการณ์ที่คิดแบบสองขั้วและฝึกวาง Continuum", "มอบหมายให้เตรียมการนำเสนอให้ได้ 100% ในครั้งหน้า", "มอบหมายให้ทำ Pie Chart แบ่งความรับผิดชอบของหัวหน้า"], "answer": 1, "caseId": "case2"}]}</script>
+<script>
+(function(){
+  "use strict";
+
+  /* ------------------------------------------------------------------ *
+   * CONFIG — ปรับได้ตรงนี้
+   * ------------------------------------------------------------------ */
+  const CONFIG = {
+    EXAM_ID: "013736-CBT-2569-1",       // เปลี่ยนเมื่อเปิดสอบรอบใหม่ (กุญแจล็อกการสอบซ้ำ + ชื่อในชีต)
+    TIME_LIMIT_MIN: 60,                 // เวลาสอบ (นาที)
+    POINTS_PER_ITEM: 0.5,
+    SHOW_SCORE_TO_STUDENT: false,       // คู่มือ: ไม่แสดงคะแนนให้นักศึกษาเห็นทันที
+    SHUFFLE_WITHIN_TOPIC: true,         // สลับลำดับข้อภายในหัวข้อเดียวกัน
+    SHUFFLE_OPTIONS: true,              // สลับลำดับตัวเลือกทุกครั้งที่เข้าทำ
+    BLOCK_COPY: true,                   // กันคัดลอกเบื้องต้น
+    // TODO: วาง URL Web App ของ Google Apps Script (ลงท้าย /exec) — ดูไฟล์ Code.gs
+    SUBMIT_ENDPOINT: "",
+    AUTO_DOWNLOAD_ON_FAIL: true,        // ส่งไม่สำเร็จ/ยังไม่ตั้ง endpoint → ดาวน์โหลด .json ให้อัตโนมัติ
+    WARN_AT_SEC: 600,                   // เหลือ 10 นาที เปลี่ยนสีเตือน
+    CRIT_AT_SEC: 120
+  };
+  const LETTERS = ["ก","ข","ค","ง"];
+  const KEY = "exam:" + CONFIG.EXAM_ID;
+
+  const DATA = JSON.parse(document.getElementById("exam-data").textContent);
+  const QUESTIONS = DATA.questions;   // [{no, clo, topic, stem, options[4], answer(0-3), caseId?}]
+  const CASES = DATA.cases;
+
+  /* ------------------------------------------------------------------ *
+   * Storage (ห่อ try/catch — บางเบราว์เซอร์ปิด localStorage)
+   * ------------------------------------------------------------------ */
+  const store = {
+    get(){ try{ return JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ return null; } },
+    set(v){ try{ localStorage.setItem(KEY, JSON.stringify(v)); }catch(e){} }
+  };
+  let S = store.get();
+  // S = { status:'in_progress'|'done', student:{id,name}, startedAt, deadline, idx, answers:[], optOrder:[[...]], blurCount, submittedAt, result, sync }
+
+  /* ------------------------------------------------------------------ *
+   * DOM helpers
+   * ------------------------------------------------------------------ */
+  const $ = id => document.getElementById(id);
+  const views = ["vStart","vQuiz","vDone","vLocked"];
+  function show(v){ views.forEach(x => $(x).classList.toggle("hidden", x !== v)); window.scrollTo(0,0); }
+  function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+  /* ------------------------------------------------------------------ *
+   * Start
+   * ------------------------------------------------------------------ */
+  $("ruleMin").textContent = CONFIG.TIME_LIMIT_MIN;
+  function validStart(){
+    $("btnStart").disabled = !($("inId").value.trim() && $("inName").value.trim() && $("inAgree").checked);
+  }
+  ["inId","inName","inAgree"].forEach(id => $(id).addEventListener("input", validStart));
+  $("inAgree").addEventListener("change", validStart);
+
+  $("btnStart").addEventListener("click", () => {
+    const now = Date.now();
+    S = {
+      status: "in_progress",
+      student: { id: $("inId").value.trim(), name: $("inName").value.trim() },
+      startedAt: now,
+      deadline: now + CONFIG.TIME_LIMIT_MIN * 60 * 1000,
+      idx: 0,
+      order: buildOrder(),                            // ลำดับข้อที่แสดง (index ใน QUESTIONS)
+      answers: Array(QUESTIONS.length).fill(null),   // index ตัวเลือกเดิม (0-3) หรือ null — เรียงตาม QUESTIONS เดิม
+      optOrder: QUESTIONS.map(() => CONFIG.SHUFFLE_OPTIONS ? shuffle([0,1,2,3]) : [0,1,2,3]),
+      blurCount: 0
+    };
+    store.set(S);
+    beginQuiz();
+  });
+
+  // จัดกลุ่มข้อที่อยู่ติดกันและมี CLO + หัวข้อเดียวกัน แล้วสลับภายในกลุ่ม (ลำดับกลุ่มคงเดิม)
+  function buildOrder(){
+    const groups = [];
+    QUESTIONS.forEach((q, i) => {
+      const g = q.clo + "|" + q.topic.split(" —")[0];
+      const last = groups[groups.length - 1];
+      if (last && last.key === g) last.items.push(i); else groups.push({ key:g, items:[i] });
+    });
+    return groups.flatMap(g => CONFIG.SHUFFLE_WITHIN_TOPIC ? shuffle(g.items.slice()) : g.items);
+  }
+
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+  /* ------------------------------------------------------------------ *
+   * Quiz — ทีละข้อ ไม่มีย้อนกลับ
+   * ------------------------------------------------------------------ */
+  let picked = null, tick = null;
+
+  function beginQuiz(){
+    show("vQuiz");
+    $("timer").classList.remove("hidden");
+    $("qCounter").classList.remove("hidden");
+    $("hdrSub").textContent = S.student.id + " · " + S.student.name;
+    lockBackButton();
+    if (CONFIG.BLOCK_COPY) blockCopy();
+    startTimer();
+    renderQ();
+  }
+
+  function renderQ(){
+    const qi = S.order[S.idx];
+    const q = QUESTIONS[qi];
+    picked = null;
+    $("btnNext").disabled = true;
+    $("btnNext").textContent = S.idx === QUESTIONS.length - 1 ? "ยืนยันคำตอบและส่งข้อสอบ" : "ยืนยันคำตอบและไปข้อถัดไป";
+    $("qCounter").textContent = "ข้อ " + (S.idx + 1) + " / " + QUESTIONS.length;
+    $("prog").style.width = (S.idx / QUESTIONS.length * 100) + "%";
+    $("qClo").textContent = "CLO " + q.clo;
+    $("qTopic").textContent = q.topic;
+    if (q.caseId && CASES[q.caseId]) {
+      $("qCase").innerHTML = "<b>กรณีศึกษา</b>" + esc(CASES[q.caseId]);
+      $("qCase").classList.remove("hidden");
+    } else $("qCase").classList.add("hidden");
+    $("qStem").innerHTML = "<b>" + (S.idx + 1) + ".</b> " + esc(q.stem);
+    const order = S.optOrder[qi];
+    $("qOpts").innerHTML = order.map((orig, pos) =>
+      '<label class="opt" data-orig="' + orig + '">' +
+        '<input type="radio" name="opt" value="' + orig + '">' +
+        '<span class="k">' + LETTERS[pos] + '</span><span>' + esc(q.options[orig]) + '</span>' +
+      '</label>').join("");
+    $("qOpts").querySelectorAll("input").forEach(inp => inp.addEventListener("change", e => {
+      picked = Number(e.target.value);
+      $("qOpts").querySelectorAll(".opt").forEach(l => l.classList.toggle("sel", Number(l.dataset.orig) === picked));
+      $("btnNext").disabled = false;
+    }));
+  }
+
+  $("btnNext").addEventListener("click", () => {
+    if (picked === null || S.status !== "in_progress") return;
+    if (S.idx === QUESTIONS.length - 1) { $("mConfirm").classList.add("show"); return; }
+    commitAnswer();
+    S.idx++;
+    store.set(S);
+    renderQ();
+  });
+  $("mCancel").addEventListener("click", () => $("mConfirm").classList.remove("show"));
+  $("mOk").addEventListener("click", () => {
+    $("mConfirm").classList.remove("show");
+    commitAnswer();
+    finish("submitted");
+  });
+
+  function commitAnswer(){ S.answers[S.order[S.idx]] = picked; }
+
+  /* ------------------------------------------------------------------ *
+   * Timer — อิง deadline จริง จึงรีเฟรชแล้วไม่รีเซ็ต
+   * ------------------------------------------------------------------ */
+  function startTimer(){
+    clearInterval(tick);
+    const t = () => {
+      const left = Math.max(0, Math.round((S.deadline - Date.now()) / 1000));
+      const m = Math.floor(left / 60), s = left % 60;
+      const el = $("timer");
+      el.textContent = String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+      el.classList.toggle("low", left <= CONFIG.WARN_AT_SEC && left > CONFIG.CRIT_AT_SEC);
+      el.classList.toggle("crit", left <= CONFIG.CRIT_AT_SEC);
+      if (left <= 0) { clearInterval(tick); finish("timeout"); }
+    };
+    t(); tick = setInterval(t, 1000);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * กันการย้อนกลับ / ออกนอกหน้า
+   * ------------------------------------------------------------------ */
+  function lockBackButton(){
+    history.pushState({exam:true}, "", location.href);
+    window.addEventListener("popstate", () => {
+      if (S && S.status === "in_progress") history.pushState({exam:true}, "", location.href);
+    });
+    window.addEventListener("beforeunload", e => {
+      if (S && S.status === "in_progress") { e.preventDefault(); e.returnValue = ""; }
+    });
+  }
+  // กันคัดลอกเบื้องต้น — ไม่ใช่ระบบความปลอดภัยสมบูรณ์ (ถ่ายภาพหน้าจอได้เสมอ)
+  function blockCopy(){
+    document.body.classList.add("locked-select");
+    const stop = e => { if (S && S.status === "in_progress") e.preventDefault(); };
+    ["contextmenu","copy","cut","dragstart","selectstart"].forEach(ev => document.addEventListener(ev, stop));
+    document.addEventListener("keydown", e => {
+      if (!(S && S.status === "in_progress")) return;
+      const k = (e.key || "").toLowerCase();
+      if ((e.ctrlKey || e.metaKey) && ["c","x","a","p","s","u"].includes(k)) e.preventDefault();
+      if (k === "f12") e.preventDefault();
+    });
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && S && S.status === "in_progress") { S.blurCount++; store.set(S); }
+  });
+
+  /* ------------------------------------------------------------------ *
+   * คิดคะแนน
+   * TODO: ย้ายไปคิดที่เซิร์ฟเวอร์ แล้วตัด field "answer" ออกจาก exam-data
+   * ------------------------------------------------------------------ */
+  function score(){
+    const byClo = {};
+    let correct = 0;
+    const detail = QUESTIONS.map((q, i) => {
+      const a = S.answers[i];
+      const ok = a === q.answer;
+      if (ok) correct++;
+      byClo[q.clo] = byClo[q.clo] || { items:0, correct:0 };
+      byClo[q.clo].items++; if (ok) byClo[q.clo].correct++;
+      return { no:q.no, clo:q.clo, topic:q.topic, chosen: a === null ? null : LETTERS[a], correct: ok };
+    });
+    return {
+      correct, items: QUESTIONS.length,
+      score: correct * CONFIG.POINTS_PER_ITEM,
+      maxScore: QUESTIONS.length * CONFIG.POINTS_PER_ITEM,
+      byClo, detail
+    };
+  }
+
+  /* ------------------------------------------------------------------ *
+   * ส่งข้อสอบ
+   * ------------------------------------------------------------------ */
+  function finish(reason){
+    if (S.status !== "in_progress") return;
+    clearInterval(tick);
+    S.status = "done";
+    S.endReason = reason;                 // submitted | timeout
+    S.submittedAt = Date.now();
+    S.result = score();
+    S.receipt = makeReceipt();
+    S.sync = CONFIG.SUBMIT_ENDPOINT ? "pending" : "local_only";
+    store.set(S);
+    renderDone();
+    sendToServer();
+  }
+
+  function makeReceipt(){
+    const a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let r = "";
+    for (let i = 0; i < 8; i++) r += a[Math.floor(Math.random() * a.length)];
+    return r.slice(0,4) + "-" + r.slice(4);
+  }
+
+  function payload(){
+    return {
+      examId: CONFIG.EXAM_ID,
+      studentId: S.student.id,
+      studentName: S.student.name,
+      startedAt: new Date(S.startedAt).toISOString(),
+      submittedAt: new Date(S.submittedAt).toISOString(),
+      durationSec: Math.round((S.submittedAt - S.startedAt) / 1000),
+      endReason: S.endReason,
+      blurCount: S.blurCount,
+      score: S.result.score,
+      maxScore: S.result.maxScore,
+      correct: S.result.correct,
+      clo1: S.result.byClo[1] ? S.result.byClo[1].correct * CONFIG.POINTS_PER_ITEM : 0,
+      clo2: S.result.byClo[2] ? S.result.byClo[2].correct * CONFIG.POINTS_PER_ITEM : 0,
+      answers: S.result.detail.map(d => d.chosen || "-").join(""),   // ตัวเลือกตามต้นฉบับ เรียงข้อ 1–40
+      questionOrder: S.order.map(i => QUESTIONS[i].no).join(","),   // ลำดับที่นักศึกษาเห็นจริง
+      receipt: S.receipt,
+      userAgent: navigator.userAgent
+    };
+  }
+
+  async function sendToServer(){
+    if (!CONFIG.SUBMIT_ENDPOINT) {
+      S.sync = "local_only"; store.set(S);
+      setStatus("ระบบยังไม่ได้เชื่อมที่เก็บคะแนน — ดาวน์โหลดไฟล์ผลสอบลงเครื่องแล้ว โปรดส่งไฟล์นี้ให้อาจารย์", "err");
+      if (CONFIG.AUTO_DOWNLOAD_ON_FAIL) downloadResult();
+      return;
+    }
+    setStatus("กำลังส่งผลสอบ… อย่าปิดหน้านี้", "");
+    try {
+      // text/plain + no-cors เลี่ยง CORS preflight ของ Google Apps Script
+      await fetch(CONFIG.SUBMIT_ENDPOINT, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify(payload()) });
+      S.sync = "sent"; store.set(S);
+      setStatus("บันทึกผลสอบเรียบร้อย ปิดหน้านี้ได้", "ok");
+      $("btnRetry").classList.add("hidden");
+    } catch (e) {
+      S.sync = "failed"; store.set(S);
+      setStatus("ส่งผลไม่สำเร็จ (อินเทอร์เน็ตอาจหลุด) — ระบบดาวน์โหลดไฟล์ผลสอบลงเครื่องให้แล้ว กด 'ส่งอีกครั้ง' หรือส่งไฟล์ให้อาจารย์", "err");
+      $("btnRetry").classList.remove("hidden");
+      if (CONFIG.AUTO_DOWNLOAD_ON_FAIL && !S.autoDownloaded) { S.autoDownloaded = true; store.set(S); downloadResult(); }
+    }
+  }
+  function setStatus(t, cls){ const el = $("submitStatus"); el.textContent = t; el.className = "status " + cls; }
+  $("btnRetry").addEventListener("click", sendToServer);
+
+  function renderDone(){
+    show("vDone");
+    $("timer").classList.add("hidden");
+    $("qCounter").classList.add("hidden");
+    $("prog").style.width = "100%";
+    const r = S.result;
+    $("receipt").textContent = S.receipt || "-";
+    $("doneWho").textContent = S.student.id + " · " + S.student.name + (S.endReason === "timeout" ? " · ส่งอัตโนมัติเมื่อหมดเวลา" : "");
+    if (CONFIG.SHOW_SCORE_TO_STUDENT) {
+      $("scoreTotal").textContent = r.score + " / " + r.maxScore;
+      $("scoreRows").innerHTML = Object.keys(r.byClo).sort().map(k =>
+        "<tr><td>CLO " + k + "</td><td class='n'>" + r.byClo[k].correct + " / " + r.byClo[k].items +
+        "</td><td class='n'>" + (r.byClo[k].correct * CONFIG.POINTS_PER_ITEM) + "</td></tr>").join("") +
+        "<tr><td><b>รวม</b></td><td class='n'><b>" + r.correct + " / " + r.items + "</b></td><td class='n'><b>" + r.score + "</b></td></tr>";
+    } else $("scoreBox").classList.add("hidden");
+    const mins = Math.round((S.submittedAt - S.startedAt) / 60000);
+    $("doneMeta").textContent = "ส่งเมื่อ " + new Date(S.submittedAt).toLocaleString("th-TH") + " · ใช้เวลา " + mins + " นาที · ออกจากหน้าต่าง " + S.blurCount + " ครั้ง";
+    document.body.classList.remove("locked-select");
+    if (S.sync === "sent") setStatus("บันทึกผลสอบเรียบร้อย ปิดหน้านี้ได้", "ok");
+    if (S.sync === "failed") { setStatus("ส่งผลไม่สำเร็จ — กดส่งอีกครั้ง", "err"); $("btnRetry").classList.remove("hidden"); }
+  }
+
+  $("btnDownload").addEventListener("click", downloadResult);
+  function downloadResult(){
+    const blob = new Blob([JSON.stringify(payload(), null, 2)], { type:"application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = CONFIG.EXAM_ID + "_" + S.student.id + ".json";
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  $("btnShowResult").addEventListener("click", renderDone);
+
+  /* ------------------------------------------------------------------ *
+   * Boot — ตัดสินว่าแสดงหน้าไหน
+   * ------------------------------------------------------------------ */
+  if (!S) show("vStart");
+  else if (S.status === "done") show("vLocked");
+  else if (S.status === "in_progress") {
+    if (Date.now() >= S.deadline) { beginQuiz(); finish("timeout"); }
+    else beginQuiz();
+  }
+})();
+</script>
+
+<!-- ที่เก็บคะแนน: ดูไฟล์ Code.gs (Google Apps Script) ที่มาคู่กัน -->
+</body>
+</html>
